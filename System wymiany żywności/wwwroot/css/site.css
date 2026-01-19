@@ -1,0 +1,110 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+:root {
+    --main-green: #2d6a4f;
+    --light-green: #d8f3dc;
+    --accent-gold: #ffb703;
+}
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, var(--light-green) 0%, #ffffff 100%);
+    border-bottom: 3px solid var(--main-green);
+    padding: 60px 0;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+
+.btn-success {
+    background-color: var(--main-green);
+    border: none;
+}
+
+    .btn-success:hover {
+        background-color: #1b4332;
+    }
+
+/* Navbar Styling */
+.navbar-custom {
+    padding: 0.8rem 0;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+}
+
+.nav-link-custom {
+    position: relative;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    margin: 0 5px;
+}
+
+    /* Subtelny efekt podkreœlenia po najechaniu */
+    .nav-link-custom::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--main-green);
+        transition: width 0.3s ease;
+    }
+
+    .nav-link-custom:hover::after {
+        width: 100%;
+    }
+
+/* Styl dla dropdown Admina */
+.dropdown-menu {
+    border-radius: 10px;
+}
+
+.dropdown-item:hover {
+    background-color: var(--light-green);
+    color: var(--main-green);
+}

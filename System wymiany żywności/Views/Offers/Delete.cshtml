@@ -1,0 +1,43 @@
+﻿@model System_wymiany_żywności.Models.Offer
+
+@{
+    ViewData["Title"] = "Usuń ofertę";
+}
+
+<h2 class="text-danger">Usuń ofertę</h2>
+<h4 class="text-muted">Czy na pewno chcesz usunąć tę ofertę? Ta operacja jest nieodwracalna.</h4>
+<hr />
+
+<div class="card border-danger shadow-sm">
+    <div class="card-header bg-danger text-white">
+        Podsumowanie oferty: @Model.Title
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Tytuł:</dt>
+            <dd class="col-sm-9">@Model.Title</dd>
+
+            <dt class="col-sm-3">Opis:</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">Cena:</dt>
+            <dd class="col-sm-9">@Model.PriceInPoints pkt</dd>
+
+            <dt class="col-sm-3">Kategoria:</dt>
+            <dd class="col-sm-9">@Model.Category?.Name</dd>
+
+            <dt class="col-sm-3">Status:</dt>
+            <dd class="col-sm-9">
+                <span class="badge bg-info">@Model.Status</span>
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="mt-4">
+                <button type="submit" class="btn btn-danger btn-lg">Potwierdzam usunięcie</button>
+                <a asp-action="Index" class="btn btn-secondary btn-lg">Wróć do listy</a>
+            </div>
+        </form>
+    </div>
+</div>

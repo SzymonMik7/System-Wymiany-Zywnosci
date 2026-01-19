@@ -1,0 +1,38 @@
+﻿@model System_wymiany_żywności.Models.Offer
+
+<h2>Szczegóły oferty</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Opis</dt>
+        <dd class="col-sm-10">@Model.Description</dd>
+        <dt class="col-sm-2">Cena</dt>
+        <dd class="col-sm-10">@Model.PriceInPoints pkt</dd>
+        <dt class="col-sm-2">Kategoria</dt>
+        <dd class="col-sm-10">@Model.Category.Name</dd>
+        <dt class="col-sm-2">Sprzedawca</dt>
+        <dd class="col-sm-10">@Model.User.UserName</dd>
+    </dl>
+</div>
+
+<div>
+    @if (Model.Status == System_wymiany_żywności.Models.OfferStatus.Active)
+    {
+        <form asp-action="Buy" asp-route-id="@Model.Id" method="post">
+            <button type="submit" class="btn btn-success btn-lg">Kup teraz (Wymień punkty)</button>
+        </form>
+    }
+    else
+    {
+        <button disabled class="btn btn-secondary">Oferta niedostępna</button>
+    }
+    <br />
+    <a asp-action="Index">Powrót do listy</a>
+</div>

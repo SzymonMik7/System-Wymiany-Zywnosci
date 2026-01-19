@@ -1,0 +1,11 @@
+namespace System_wymiany_żywności.Tests
+{
+    public class UnitTest1
+    {
+        [Fact]
+        public void Test1()
+        {
+
+        }
+    }
+}

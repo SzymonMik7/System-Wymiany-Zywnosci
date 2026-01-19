@@ -1,0 +1,26 @@
+﻿@model IEnumerable<System_wymiany_żywności.Models.UserReportViewModel>
+
+<h2>Raport aktywności użytkowników</h2>
+<p>Dane generowane przez procedurę składowaną SQL.</p>
+
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Użytkownik</th>
+            <th>Reputacja (Trust Score)</th>
+            <th>Utworzone Oferty</th>
+            <th>Stan Portfela</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.TrustScore</td>
+                <td>@item.OffersCreated</td>
+                <td>@item.WalletBalance</td>
+            </tr>
+        }
+    </tbody>
+</table>
