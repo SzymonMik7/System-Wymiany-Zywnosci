@@ -31,7 +31,7 @@ namespace System_wymiany_żywności.Controllers
             var offer = await _context.Offers.FindAsync(id);
             if (offer != null)
             {
-                // Zmiana statusu sprawia, że oferta staje się widoczna dla innych użytkowników
+                // Zmiana statusu oferty
                 offer.Status = OfferStatus.Active;
                 await _context.SaveChangesAsync();
             }
@@ -41,7 +41,7 @@ namespace System_wymiany_żywności.Controllers
         // Akcja generująca raport aktywności użytkowników z bazy danych
         public async Task<IActionResult> Report()
         {
-            // Wywołanie procedury składowanej SQL (Stored Procedure) stworzonej wcześniej w bazie
+            // Wywołanie procedury składowanej SQL stworzonej wcześniej w bazie
             var reportData = await _context.Database
                 .SqlQuery<UserReportViewModel>($"EXEC sp_GetUserReport")
                 .ToListAsync();

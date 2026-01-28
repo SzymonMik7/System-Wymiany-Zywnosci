@@ -1,6 +1,6 @@
 ﻿namespace System_wymiany_żywności.Models
 {
-    // Klasa rezerwacji, aktualnie nie ma takiej opcji w aplikacji, ale wprowadzona w razie rozbudowy 
+    // Klasa rezerwacji ale to bardziej na przyszlość do rozwoju bo na razie rezerwacje są prymitywne
     public class Reservation
     {
         public int Id { get; set; }

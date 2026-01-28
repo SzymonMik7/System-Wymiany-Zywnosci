@@ -22,15 +22,14 @@ namespace System_wymiany_żywności.Models
 
         // FK - Klucz obcy do tabeli użytkowników
         public string UserId { get; set; }
-        // Obiekt użytkownika - powiązanie relacyjne (1 użytkownik : wiele ofert)
+        // Obiekt użytkownika - powiązanie relacyjne jeden do wielu
         public ApplicationUser User { get; set; }
 
         // FK - Klucz obcy do tabeli kategorii
         public int CategoryId { get; set; }
-        // Obiekt kategorii - powiązanie relacyjne (1 kategoria : wiele ofert)
+        // Obiekt kategorii - powiązanie relacyjne jeden do wielu
         public Category Category { get; set; }
 
-        // Relacja do tabeli rezerwacji
         public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
     }
 }

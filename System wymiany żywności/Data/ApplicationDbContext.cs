@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace System_wymiany_żywności.Data
 {
-    // Główna klasa kontekstu bazy danych - łączy nasz kod C# z silnikiem SQL Server
+    // Główna klasa kontekstu bazy danych łączy nasz kod C# z silnikiem SQL Server
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -23,19 +23,27 @@ namespace System_wymiany_żywności.Data
             base.OnModelCreating(builder);
 
             // Konfiguracja relacji
-            builder.Entity<Reservation>()
-                .HasOne(r => r.Offer)
-                .WithMany(o => o.Reservations)
-                .HasForeignKey(r => r.OfferId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Reservation>(entity =>
+            {
+                // Informujemy EF Core że ta tabela ma Trigger SQL
+                entity.ToTable(tb => tb.HasTrigger("trg_LogNewReservation"));
 
-            builder.Entity<Reservation>()
-                .HasOne(r => r.Buyer)
-                .WithMany()
-                .HasForeignKey(r => r.BuyerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                // Relacja: Rezerwacja dotyczy jednej Oferty
+                entity.HasOne(r => r.Offer)
+                    .WithMany(o => o.Reservations)
+                    .HasForeignKey(r => r.OfferId)
+                    .OnDelete(DeleteBehavior.Restrict); 
+                // Nie usuwaj oferty, jeśli są rezerwacje
 
-            //Dane startowe
+                // Relacja: Rezerwacja jest składana przez Kupującego
+                entity.HasOne(r => r.Buyer)
+                    .WithMany()
+                    .HasForeignKey(r => r.BuyerId)
+                    .OnDelete(DeleteBehavior.Restrict); 
+                // Nie usuwaj rezerwacji przy usuwaniu usera (historia)
+            });
+
+            //Dane startowe do bazy
 
             builder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Warzywa" },
@@ -52,7 +60,7 @@ namespace System_wymiany_żywności.Data
                 new IdentityRole { Id = userRoleId, Name = "User", NormalizedName = "USER" }
             );
 
-            // 3. Tworzenie domyślnego konta Administratora
+            // Tworzenie domyślnego konta Administratora
             var adminId = "admin-user-id";
             var adminUser = new ApplicationUser
             {
@@ -67,13 +75,13 @@ namespace System_wymiany_żywności.Data
                 SecurityStamp = "f4c2c54c-53f4-477b-8321-72995f745199"
             };
 
-            // Haszowanie hasła administratora (bezpieczne przechowywanie)
+            // Haszowanie hasła administratora
             PasswordHasher<ApplicationUser> ph = new PasswordHasher<ApplicationUser>();
             adminUser.PasswordHash = ph.HashPassword(adminUser, "Admin123!");
 
             builder.Entity<ApplicationUser>().HasData(adminUser);
 
-            // 4. Przypisanie roli Admina do stworzonego użytkownika
+            // Przypisanie roli Admina do stworzonego użytkownika
             builder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string> { RoleId = adminRoleId, UserId = adminId }
             );

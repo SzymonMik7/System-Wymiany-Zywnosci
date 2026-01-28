@@ -173,7 +173,7 @@ namespace System_wymiany_żywności.Controllers
 
             if (offer == null) return NotFound();
 
-            // Zabezpieczenie: usuwać może tylko właściciel
+            // Zabezpieczenie usuwać może tylko właściciel
             var user = await _userManager.GetUserAsync(User);
             if (offer.UserId != user.Id) return Forbid();
 
@@ -196,6 +196,27 @@ namespace System_wymiany_żywności.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Reserve(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            // Wywołanie serwisu
+            var success = await _exchangeService.ReserveOfferAsync(id, user.Id);
+
+            if (success)
+            {
+                TempData["Message"] = "Oferta została pomyślnie zarezerwowana! Skontaktuj się z właścicielem.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["Error"] = "Nie udało się zarezerwować oferty (może być już zajęta lub jest Twoja).";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
         }
     }
 }

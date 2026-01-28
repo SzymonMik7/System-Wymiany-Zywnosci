@@ -6,7 +6,7 @@ using System_wymiany_żywności.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Połączenie z bazą danych
+// Połączenie z bazą danych
 // Pobieramy "Connection String" z pliku appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string not found.");
@@ -15,7 +15,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// 2. Konfiguracja systemu Identity
+// Konfiguracja systemu Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 6;
@@ -25,7 +25,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
 .AddDefaultUI()
 .AddDefaultTokenProviders();
 
-// 3. Rejestracja własnych serwisów
 // Rejestrujemy IExchangeService, aby móc go wstrzykiwać do kontrolerów
 builder.Services.AddScoped<IExchangeService, ExchangeService>();
 

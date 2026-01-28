@@ -1,4 +1,12 @@
-﻿@model System_wymiany_żywności.Models.Offer
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<System_wymiany_żywności.Models.ApplicationUser> UserManager
+@model System_wymiany_żywności.Models.Offer
+
+@{
+    // Pobieranie aktualnego użytkownika, aby sprawdzić, czy jest właścicielem
+    var currentUser = await UserManager.GetUserAsync(User);
+    bool isOwner = currentUser != null && Model.UserId == currentUser.Id;
+}
 
 <h2>Szczegóły oferty</h2>
 
@@ -13,26 +21,60 @@
     <dl class="row">
         <dt class="col-sm-2">Opis</dt>
         <dd class="col-sm-10">@Model.Description</dd>
+
         <dt class="col-sm-2">Cena</dt>
-        <dd class="col-sm-10">@Model.PriceInPoints pkt</dd>
+        <dd class="col-sm-10">
+            <span class="badge bg-warning text-dark fs-6">@Model.PriceInPoints pkt</span>
+        </dd>
+
         <dt class="col-sm-2">Kategoria</dt>
         <dd class="col-sm-10">@Model.Category.Name</dd>
+
         <dt class="col-sm-2">Sprzedawca</dt>
-        <dd class="col-sm-10">@Model.User.UserName</dd>
+        <dd class="col-sm-10">
+            @Model.User.UserName
+            <small class="text-muted">(Reputacja: @Model.User.TrustScore)</small>
+        </dd>
     </dl>
 </div>
 
-<div>
+<div class="mt-4">
     @if (Model.Status == System_wymiany_żywności.Models.OfferStatus.Active)
     {
-        <form asp-action="Buy" asp-route-id="@Model.Id" method="post">
-            <button type="submit" class="btn btn-success btn-lg">Kup teraz (Wymień punkty)</button>
-        </form>
+        @if (isOwner)
+        {
+            <div class="alert alert-info">
+                To jest Twoja oferta. Nie możesz jej kupić ani zarezerwować.
+            </div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edytuj ofertę</a>
+        }
+        else
+        {
+            <div class="d-flex gap-2">
+                @* Przycisk KUP TERAZ *@
+                <form asp-action="Buy" asp-route-id="@Model.Id" method="post">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="bi bi-cart-check"></i> Kup teraz (Wymień punkty)
+                    </button>
+                </form>
+
+                @* Przycisk REZERWACJA *@
+                <form asp-action="Reserve" asp-route-id="@Model.Id" method="post">
+                    <button type="submit" class="btn btn-warning btn-lg text-dark">
+                        <i class="bi bi-clock-history"></i> Rezerwuj (Odbiór osobisty)
+                    </button>
+                </form>
+            </div>
+        }
     }
     else
     {
-        <button disabled class="btn btn-secondary">Oferta niedostępna</button>
+        <button disabled class="btn btn-secondary btn-lg">
+            Oferta niedostępna (@Model.Status)
+        </button>
     }
-    <br />
-    <a asp-action="Index">Powrót do listy</a>
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-outline-secondary">Powrót do listy</a>
+    </div>
 </div>

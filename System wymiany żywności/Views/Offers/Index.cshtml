@@ -39,7 +39,7 @@
                         <div class="btn-group" role="group">
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white">Szczegóły</a>
 
-                            @* Wyświetlaj Edytuj/Usuń tylko właścicielowi ogłoszenia *@
+                            @* Wyświetl Edytuj/Usuń tylko właścicielowi ogłoszenia *@
                             @if (currentUser != null && item.UserId == currentUser.Id)
                             {
                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edytuj</a>

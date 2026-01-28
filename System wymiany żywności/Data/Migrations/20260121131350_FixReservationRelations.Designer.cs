@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System_wymiany_żywności.Data;
 
@@ -11,9 +12,11 @@ using System_wymiany_żywności.Data;
 namespace System_wymiany_żywności.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260121131350_FixReservationRelations")]
+    partial class FixReservationRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,13 +254,13 @@ namespace System_wymiany_żywności.Data.Migrations
                         {
                             Id = "admin-user-id",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "58c44ca9-5c19-4826-8474-41f029a70409",
+                            ConcurrencyStamp = "88d02670-8e82-4ddb-801c-7292522b801a",
                             Email = "admin@food.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FOOD.COM",
                             NormalizedUserName = "ADMIN@FOOD.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEuRxwtniiI8vRCiLoUyooti/kbXu6uqgpC/3+UnQVSFuq5Cw/3+EPGLIpSJ+WL5tw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEFPDW7WfS2s9ntZ7rhwF5Q530u39eirPj7OzIHCjoMUwWr4/gdmZqrN9Sf4+aYkEg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "f4c2c54c-53f4-477b-8321-72995f745199",
                             TrustScore = 100,
@@ -404,12 +407,7 @@ namespace System_wymiany_żywności.Data.Migrations
 
                     b.HasIndex("OfferId");
 
-                    b.ToTable("Reservations", t =>
-                        {
-                            t.HasTrigger("trg_LogNewReservation");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
